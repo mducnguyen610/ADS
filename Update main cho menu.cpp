@@ -79,7 +79,7 @@ void swapItems(Item* a, Item* b) {
     strcpy(a->name, b->name);
     strcpy(b->name, tempName);
 
-    int tempQuantity = a->quantity;	//Hoan doi so luon
+    int tempQuantity = a->quantity;	//Hoan doi so luong
     a->quantity = b->quantity;
     b->quantity = tempQuantity;
 
@@ -87,7 +87,7 @@ void swapItems(Item* a, Item* b) {
     a->price = b->price;
     b->price = tempPrice;
 }
-//Sap xep theo ID
+//Sap xep theo ID tu be den lon
 void sortItems(Item*& head) {
     if (!head) return;	//Ds rong thi ko lam gi
     bool swapped;
@@ -96,6 +96,23 @@ void sortItems(Item*& head) {
         Item* current = head;
         while (current->next) {
             if (current->id > current->next->id) { //Kiem tra id mat hang hien tai co lon hon id mat hang ke tiep
+                swapItems(current, current->next);//Hoan doi thong tin 2 mat hang
+                swapped = true;	//Danh dau da hoan doi
+            }
+            current = current->next;
+        }
+    } while (swapped);
+}
+
+//Sap xep theo so luong tu be den lon
+void sortItems(Item*& head) {
+    if (!head) return;	//Ds rong thi ko lam gi
+    bool swapped;
+    do {
+        swapped = false;
+        Item* current = head;
+        while (current->next) {
+            if (current->quantity > current->next->quantity) { //Kiem tra so luong mat hang hien tai co lon hon so luong mat hang ke tiep
                 swapItems(current, current->next);//Hoan doi thong tin 2 mat hang
                 swapped = true;	//Danh dau da hoan doi
             }
@@ -117,11 +134,11 @@ int main() {
 	int choice;				//Bien lua chon thao tac tren menu
 	//Giao dien menu
 	do{
-		cout<<"\nMenu: \n";
-		cout<< "1. Them mat hang\n";
+	cout<<"\nMenu:\n";
+	cout<< "1. Them mat hang\n";
         cout<< "2. Sua thong tin mat hang\n";
         cout<< "3. Xoa mat hang\n";
-        cout<< "4. Sap xep mat hang\n";
+        cout<< "4. Sap xep mat hang theo ID\n";
         cout<< "5. In ra danh sach mat hang\n";
         cout<< "0. Thoat\n";
         cout<< "Lua chon cua ban: ";
