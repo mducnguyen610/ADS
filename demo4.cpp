@@ -11,6 +11,7 @@ struct Item {
     double price;
     Item* next;
 };
+//
 void pressAnyKey() {
     cout << "\n\nBam phim bat ky de tiep tuc...";
     getch();
