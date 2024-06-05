@@ -88,7 +88,7 @@ void swapItems(Item* a, Item* b) {
     b->price = tempPrice;
 }
 //Sap xep theo ID tu be den lon
-void sortItems(Item*& head) {
+void sortItemsID(Item*& head) {
     if (!head) return;	//Ds rong thi ko lam gi
     bool swapped;
     do {
@@ -105,7 +105,7 @@ void sortItems(Item*& head) {
 }
 
 //Sap xep theo so luong tu be den lon
-void sortItems(Item*& head) {
+void sortItemsQuantity(Item*& head) {
     if (!head) return;	//Ds rong thi ko lam gi
     bool swapped;
     do {
@@ -165,7 +165,7 @@ int main() {
 			cout<< "Nhap ten moi cua mat hang: ";cin.ignore();cin.getline(name, 50);
             cout<< "Nhap so luong moi cua mat hang: ";cin >> quantity;
             cout<< "Nhap gia moi cua mat hang: ";cin >> price;
-            if(!updateItem(head, id, name, quatity, price)){
+            if(!updateItem(head, id, name, quantity, price)){
             	cout<<"Khong tim thay mat hang voi ID nay: "<<id<<endl;
 			}
 			break;
@@ -180,7 +180,7 @@ int main() {
 			break;
 		}
 		case 4:{
-			sortItem(head);
+			sortItemsID(head);
 			cout<<" Danh sach mat hang da duoc sap xep theo ID:\n"
 			break;
 		}
