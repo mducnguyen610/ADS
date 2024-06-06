@@ -3,7 +3,8 @@
 #include <iostream>
 #include <string.h>
 using namespace std;
-//Dinh nghia cau truc cua mat hang bao gom id, ten, so luong, gia ca va di kem con tro
+
+// Định nghĩa cấu trúc của mặt hàng bao gồm id, tên, số lượng, giá cả và đi kèm con trỏ
 struct Item {
     int id;
     char name[50];
@@ -11,122 +12,125 @@ struct Item {
     double price;
     Item* next;
 };
-//
+
 void pressAnyKey() {
-    cout << "\n\nBam phim bat ky de tiep tuc...";
+    cout << "\n\nBấm phím bất kỳ để tiếp tục...";
     getch();
     system("cls");
 }
-//Them mot mat hang moi
+
+// Thêm một mặt hàng mới
 void addItem(Item*& head, int id, const char* name, int quantity, double price) {
-    Item* newItem = new Item; //Khoi tao
-    //Gan id, ten, so luong, gia ca vs con tro cho mat hang
+    Item* newItem = new Item;
     newItem->id = id;
     strcpy(newItem->name, name);
     newItem->quantity = quantity;
     newItem->price = price;
     newItem->next = NULL;
-	//Neu danh sach rong thi con tro la mat hang dau danh sach
     if (!head) {
-        head = newItem; //gan bang vi tri head
+        head = newItem;
     } else {
-        Item* temp = head; 
-        while (temp->next) { //Con neu ko thi duyet xuong cuoi danh sach
+        Item* temp = head;
+        while (temp->next) {
             temp = temp->next;
         }
-        temp->next = newItem;//Them mat hang moi nay vao cuoi danh sach
+        temp->next = newItem;
     }
 }
-//Sua thong tin mat hang
+
+// Sửa thông tin mặt hàng
 bool updateItem(Item* head, int id, const char* name, int quantity, double price) {
     Item* temp = head;
     while (temp) {
-        if (temp->id == id) {		//Tim mat hang bang id co san ma ng dung muon thay doi
-        	//Cap nhat thong tin moi
+        if (temp->id == id) {
             strcpy(temp->name, name);
             temp->quantity = quantity;
             temp->price = price;
-            return true; 	//Tra ve true khi cap nhat thanh cong
+            return true;
         }
         temp = temp->next;
     }
-    return false; //Tra ve false neu mat hang can tim ko ton tai
+    return false;
 }
-//Xoa mat hang
+
+// Xóa mặt hàng
 bool deleteItem(Item*& head, int id) {
-    if (!head) return false;	//Tra ve false neu ds rong
+    if (!head) return false;
     if (head->id == id) {
-        Item* temp = head;		//Tao mot con tro tam thoi
-        head = head->next;		//Cap nhat dau danh sach
-        delete temp;			//Xoa mat hang
-        return true;			//Tra ve true khi thanh cong
+        Item* temp = head;
+        head = head->next;
+        delete temp;
+        return true;
     }
-    Item* prev = head;			//Khoi tao con tro prev tro den phan tu dau tien
-    Item* current = head->next;	//Khoi tao con tro current tro den phan tu t2
-    while (current) {			//Chay vong lap cho den khi current bang NULL (duyet cac id tu dau den cuoi danh sach)
-        if (current->id == id) {//Tim id trung vs id cua mat hang can xoa
-            prev->next = current->next;//Tim thay roi thi cap nhat con tro next cho prev de bo qua current
-            delete current;		//Xoa current (mat hang hien tai dc chon de xoa)
-            return true;		//Tra ve true khi thanh cong
+    Item* prev = head;
+    Item* current = head->next;
+    while (current) {
+        if (current->id == id) {
+            prev->next = current->next;
+            delete current;
+            return true;
         }
-        prev = current;			//Cap nhat mat hang dung truoc vao vi tri mat hang vua xoa de tro den phan tu ke tiep
+        prev = current;
         current = current->next;
     }
-    return false; //Tra ve false neu ko tim dc mat hang
+    return false;
 }
-//Doi thong tin giua cac mat hang cho nhau de sap xep trong danh sach
+
+// Đổi thông tin giữa các mặt hàng cho nhau để sắp xếp trong danh sách
 void swapItems(Item* a, Item* b) {
-    int tempId = a->id; //Hoan doi id
+    int tempId = a->id;
     a->id = b->id;
     b->id = tempId;
 
-    char tempName[50];	//Hoan doi ten
+    char tempName[50];
     strcpy(tempName, a->name);
     strcpy(a->name, b->name);
     strcpy(b->name, tempName);
 
-    int tempQuantity = a->quantity;	//Hoan doi so luong
+    int tempQuantity = a->quantity;
     a->quantity = b->quantity;
     b->quantity = tempQuantity;
 
-    double tempPrice = a->price;	//Hoan doi gia
+    double tempPrice = a->price;
     a->price = b->price;
     b->price = tempPrice;
 }
-//Sap xep theo ID tu be den lon
+
+// Sắp xếp theo ID từ bé đến lớn
 void sortItemsID(Item*& head) {
-    if (!head) return;	//Ds rong thi ko lam gi
+    if (!head) return;
     bool swapped;
     do {
         swapped = false;
         Item* current = head;
         while (current->next) {
-            if (current->id > current->next->id) { //Kiem tra id mat hang hien tai co lon hon id mat hang ke tiep
-                swapItems(current, current->next);//Hoan doi thong tin 2 mat hang
-                swapped = true;	//Danh dau da hoan doi
+            if (current->id > current->next->id) {
+                swapItems(current, current->next);
+                swapped = true;
             }
             current = current->next;
         }
     } while (swapped);
 }
 
-//Sap xep theo so luong tu be den lon
+// Sắp xếp theo số lượng từ bé đến lớn
 void sortItemsQuantity(Item*& head) {
-    if (!head) return;	//Ds rong thi ko lam gi
+    if (!head) return;
     bool swapped;
     do {
         swapped = false;
         Item* current = head;
         while (current->next) {
-            if (current->quantity > current->next->quantity) { //Kiem tra so luong mat hang hien tai co lon hon so luong mat hang ke tiep
-                swapItems(current, current->next);//Hoan doi thong tin 2 mat hang
-                swapped = true;	//Danh dau da hoan doi
+            if (current->quantity > current->next->quantity) {
+                swapItems(current, current->next);
+                swapped = true;
             }
             current = current->next;
         }
     } while (swapped);
 }
-//In ra danh sach mat hang
+
+// In ra danh sách mặt hàng
 void printItems(const Item* head) {
     const Item* temp = head;
     while (temp) {
@@ -135,77 +139,182 @@ void printItems(const Item* head) {
         temp = temp->next;
     }
 }
+
+// Hàm xuất hàng
+void exportItem(Item*& head, Item*& soldHead, int id, int quantity) {
+    Item* temp = head;
+    while (temp) {
+        if (temp->id == id) {
+            if (temp->quantity >= quantity) {
+                temp->quantity -= quantity;
+                Item* soldItem = new Item;
+                soldItem->id = id;
+                strcpy(soldItem->name, temp->name);
+                soldItem->quantity = quantity;
+                soldItem->price = temp->price;
+                soldItem->next = soldHead;
+                soldHead = soldItem;
+                if (temp->quantity == 0) {
+                    deleteItem(head, id);
+                }
+                return;
+            } else {
+                cout << "Không đủ số lượng hàng trong kho để xuất." << endl;
+                return;
+            }
+        }
+        temp = temp->next;
+    }
+    cout << "Không tìm thấy mặt hàng với ID này." << endl;
+}
+
+// In ra danh sách sản phẩm đã xuất
+void printSoldItems(const Item* head) {
+    const Item* temp = head;
+    while (temp) {
+        cout << "ID: " << temp->id << ", Name: " << temp->name
+                  << ", Quantity: " << temp->quantity << ", Price: " << temp->price << std::endl;
+        temp = temp->next;
+    }
+}
+
+// Tính tổng số lượng và giá trị của các sản phẩm
+void calculateTotal(const Item* head) {
+    int totalQuantity = 0;
+    double totalPrice = 0;
+    const Item* temp = head;
+    while (temp) {
+        totalQuantity += temp->quantity;
+        totalPrice += temp->price * temp->quantity;
+        temp = temp->next;
+    }
+    cout << "Tổng số lượng các sản phẩm trong kho: " << totalQuantity << endl;
+    cout << "Tổng giá trị các sản phẩm trong kho: " << totalPrice << endl;
+}
+
+// Tính tổng số lượng và giá trị của các sản phẩm đã xuất
+void calculateTotalSold(const Item* head) {
+    int totalQuantity = 0;
+    double totalPrice = 0;
+    const Item* temp = head;
+    while (temp) {
+        totalQuantity += temp->quantity;
+        totalPrice += temp->price * temp->quantity;
+        temp = temp->next;
+    }
+    cout << "Tổng số lượng các sản phẩm đã xuất: " << totalQuantity << endl;
+    cout << "Tổng giá trị các sản phẩm đã xuất: " << totalPrice << endl;
+}
+
 int main() {
     Item* head = NULL;
-	int choice;				//Bien lua chon thao tac tren menu
-	int id, quantity;
-	char name[50];
-	double price;
-	//Giao dien menu
- 	while(true){
-	cout<<"\nMenu:\n";
-	cout<< "1. Them mat hang\n";
-        cout<< "2. Sua thong tin mat hang\n";
-        cout<< "3. Xoa mat hang\n";
-        cout<< "4. Sap xep mat hang theo ID\n";
-        cout<< "5. In ra danh sach mat hang\n";
-        cout<< "0. Thoat\n";
-        cout<< "Lua chon cua ban: ";
-        cin >> choice;
-	//Cai dat ham thao tac voi menu
-	switch(choice){
-		
-		case 1:
-			cout<< "Nhap ID mat hang: ";cin >> id;
-			cout<< "Nhap ten mat hang: ";cin.ignore();cin.getline(name, 50);
-            cout<< "Nhap so luong cua mat hang: ";cin >> quantity;
-            cout<< "Nhap gia: ";cin >> price;
-            pressAnyKey();
-			break;
-		
-		case 2:
-			cout<< "Nhap ID mat hang can sua: ";cin >> id;
-			cout<< "Nhap ten moi cua mat hang: ";cin.ignore();cin.getline(name, 50);
-            cout<< "Nhap so luong moi cua mat hang: ";cin >> quantity;
-            cout<< "Nhap gia moi cua mat hang: ";cin >> price;
-            if(!updateItem(head, id, name, quantity, price)){
-            	cout<<"Khong tim thay mat hang voi ID nay: "<<id<<endl;
-			}
-			pressAnyKey();
-			break;
-		
-		case 3:
+    Item* soldHead = NULL;
+    int choice;
+    int id, quantity;
+    char name[50];
+    double price;
 
-			cout<<"Nhap ID mat hang ban muon xoa: ";
-			cin>>id;
-			if(!deleteItem(head, id)){
-				cout<<"Khong tim thay mat hang voi ID nay: "<<endl;
-			}
-			pressAnyKey();
-			break;
-		
-		case 4:
-			sortItemsID(head);
-			cout<<" Danh sach mat hang da duoc sap xep theo ID:\n";
-			pressAnyKey();
-			break;
-		
-		case 5:
-			cout<<"Danh sach mat hang:\n";
-			pressAnyKey();
-			break;
-		
-		case 0:
-			cout<<"Thoat chuong trinh.\n";
-			pressAnyKey();
-			break;
-		
-        default:
-        	cout << "\nKhong co chuc nang nay!";
-            cout << "\nHay chon chuc nang trong hop menu.";
-            pressAnyKey();
-            break;
-		
-		}
-	}	
+    while (true) {
+        cout << "\nMenu:\n";
+        cout << "1. Thêm mặt hàng\n";
+        cout << "2. Sửa thông tin mặt hàng\n";
+        cout << "3. Xóa mặt hàng\n";
+        cout << "4. Sắp xếp mặt hàng theo ID\n";
+        cout << "5. In ra danh sách mặt hàng\n";
+        cout << "6. Tính tổng số lượng và giá trị các sản phẩm\n";
+        cout << "7. Xuất hàng\n";
+        cout << "8. In ra danh sách sản phẩm đã xuất\n";
+        cout << "9. Tính tổng số lượng và giá trị các sản phẩm đã xuất\n";
+        cout << "0. Thoát\n";
+        cout << "Lựa chọn của bạn: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Nhập ID mặt hàng: ";
+                cin >> id;
+                cout << "Nhập tên mặt hàng: ";
+                cin.ignore();
+                cin.getline(name, 50);
+                cout << "Nhập số lượng của mặt hàng: ";
+                cin >> quantity;
+                cout << "Nhập giá: ";
+                cin >> price;
+                addItem(head, id, name, quantity, price);
+                pressAnyKey();
+                break;
+
+            case 2:
+                cout << "Nhập ID mặt hàng cần sửa: ";
+                cin >> id;
+                cout << "Nhập tên mới của mặt hàng: ";
+                cin.ignore();
+                cin.getline(name, 50);
+                cout << "Nhập số lượng mới của mặt hàng: ";
+                cin >> quantity;
+                cout << "Nhập giá mới của mặt hàng: ";
+                cin >> price;
+                if (!updateItem(head, id, name, quantity, price)) {
+                    cout << "Không tìm thấy mặt hàng với ID này: " << id << endl;
+                }
+                pressAnyKey();
+                break;
+
+            case 3:
+                cout << "Nhập ID mặt hàng bạn muốn xóa: ";
+                cin >> id;
+                if (!deleteItem(head, id)) {
+                    cout << "Không tìm thấy mặt hàng với ID này: " << id << endl;
+                }
+                pressAnyKey();
+                break;
+
+            case 4:
+                sortItemsID(head);
+                cout << "Danh sách mặt hàng đã được sắp xếp theo ID:\n";
+                pressAnyKey();
+                break;
+
+            case 5:
+                cout << "Danh sách mặt hàng:\n";
+                printItems(head);
+                pressAnyKey();
+                break;
+
+            case 6:
+                calculateTotal(head);
+                pressAnyKey();
+                break;
+
+            case 7:
+                cout << "Nhập ID mặt hàng cần xuất: ";
+                cin >> id;
+                cout << "Nhập số lượng cần xuất: ";
+                cin >> quantity;
+                exportItem(head, soldHead, id, quantity);
+                pressAnyKey();
+                break;
+
+            case 8:
+                cout << "Danh sách sản phẩm đã xuất:\n";
+                printSoldItems(soldHead);
+                pressAnyKey();
+                break;
+
+            case 9:
+                calculateTotalSold(soldHead);
+                pressAnyKey();
+                break;
+
+            case 0:
+                cout << "Thoát chương trình.\n";
+                return 0;
+
+            default:
+                cout << "\nKhông có chức năng này!";
+                cout << "\nHãy chọn chức năng trong hợp menu.";
+                pressAnyKey();
+                break;
+        }
+    }
 }
