@@ -129,7 +129,22 @@ void sortItemsQuantity(Item*& head) {
         }
     } while (swapped);
 }
-
+//Sắp xếp theo giá tiền từ bé đến lớn
+void sortItemsPrice(Item*& head) {
+    if (!head) return;	//Ds rong thi ko lam gi
+    bool swapped;
+    do {
+        swapped = false;
+        Item* current = head;
+        while (current->next) {
+            if (current->price > current->next->price) { //Kiem tra gia cua mat hang hien tai co lon hon gia cua mat hang ke tiep
+                swapItems(current, current->next);//Hoan doi thong tin 2 mat hang
+                swapped = true;	//Danh dau da hoan doi
+            }
+            current = current->next;
+        }
+    } while (swapped);
+}
 // In ra danh sách mặt hàng
 void printItems(const Item* head) {
     const Item* temp = head;
@@ -220,11 +235,13 @@ int main() {
         cout << "2. Sửa thông tin mặt hàng\n";
         cout << "3. Xóa mặt hàng\n";
         cout << "4. Sắp xếp mặt hàng theo ID\n";
-        cout << "5. In ra danh sách mặt hàng\n";
-        cout << "6. Tính tổng số lượng và giá trị các sản phẩm\n";
-        cout << "7. Xuất hàng\n";
-        cout << "8. In ra danh sách sản phẩm đã xuất\n";
-        cout << "9. Tính tổng số lượng và giá trị các sản phẩm đã xuất\n";
+        cout << "5. Sắp xếp mặt hàng theo số lượng\n";
+        cout << "6. Sắp xếp mặt hàng theo giá tiền\n";
+        cout << "7. In ra danh sách mặt hàng\n";
+        cout << "8. Tính tổng số lượng và giá trị các sản phẩm\n";
+        cout << "9. Xuất hàng\n";
+        cout << "10. In ra danh sách sản phẩm đã xuất\n";
+        cout << "11. Tính tổng số lượng và giá trị các sản phẩm đã xuất\n";
         cout << "0. Thoát\n";
         cout << "Lựa chọn của bạn: ";
         cin >> choice;
@@ -274,19 +291,28 @@ int main() {
                 cout << "Danh sách mặt hàng đã được sắp xếp theo ID:\n";
                 pressAnyKey();
                 break;
-
             case 5:
+                sortItemsQuantity(head);
+                cout << "Danh sách mặt hàng đã được sắp xếp theo số lượng:\n";
+                pressAnyKey();
+                break;
+            case 6:
+                sortItemsPrice(head);
+                cout << "Danh sách mặt hàng đã được sắp xếp theo giá tiền:\n";
+                pressAnyKey();
+                break;
+            case 7:
                 cout << "Danh sách mặt hàng:\n";
                 printItems(head);
                 pressAnyKey();
                 break;
 
-            case 6:
+            case 8:
                 calculateTotal(head);
                 pressAnyKey();
                 break;
 
-            case 7:
+            case 9:
                 cout << "Nhập ID mặt hàng cần xuất: ";
                 cin >> id;
                 cout << "Nhập số lượng cần xuất: ";
@@ -295,13 +321,13 @@ int main() {
                 pressAnyKey();
                 break;
 
-            case 8:
+            case 10:
                 cout << "Danh sách sản phẩm đã xuất:\n";
                 printSoldItems(soldHead);
                 pressAnyKey();
                 break;
 
-            case 9:
+            case 11:
                 calculateTotalSold(soldHead);
                 pressAnyKey();
                 break;
