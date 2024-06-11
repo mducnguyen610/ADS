@@ -238,7 +238,7 @@ int main() {
         cout << "5. Sap xep san pham theo so luong\n";
         cout << "6. Sap xep san pham theo so tien\n";
         cout << "7. In ra danh sach san pham\n";
-        cout << "8. Tinh tong so san pham va tong gia tri san pham";
+        cout << "8. Tinh tong so san pham va tong gia tri san pham\n";
         cout << "9. Xuat san pham\n";
         cout << "10. In ra danh sach san pham da xuat\n";
         cout << "11. Tinh tong so san pham va tong gia tri san pham da xuat\n";
