@@ -5,7 +5,7 @@ using namespace std;
 typedef struct item{
 	string id, name;
 	int quantity;
-	double price;
+	unsigned long long price;
 }item;
 struct node_item{
 	//data
@@ -187,7 +187,7 @@ void sortItemsPrice(list_item &L) {// ham thay doi vi tri theo gia ca tu cao den
 }
 void Total(list_item &L){ // ham tong gia va so luong san pham
 	int s_quantity = 0; // tong so luong ban dau 
-	double s_price = 0; // tong so luong sau 
+	unsigned long long s_price = 0; // tong so luong sau 
 	for(node_item* k = L.phead ; k!= NULL;k = k->pnext){ //Duyet danh sach lien ket
 	   s_quantity += k->data.quantity ; // duyet roi cong them so luong
 	   s_price += (k->data.price)*(k->data.quantity);//duyet cong them gia * so luong cua san pham do
